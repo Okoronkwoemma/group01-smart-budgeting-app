@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Budget Tracker{% endblock %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+{% block content %}
+<h1 class="mb-4">Budget Dashboard</h1>
+<div class="row mb-4">
+    <div class="col-md-6 col-lg-4 mb-3">
+        <div class="card text-white bg-success h-100">
+            <div class="card-body">
+                <h5 class="card-title">Total Balance</h5>
+                <p class="card-text fs-3">${{ total_balance }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4 mb-3">
+        <div class="card text-white bg-danger h-100">
+            <div class="card-body">
+                <h5 class="card-title">Monthly Spend</h5>
+                <p class="card-text fs-3">${{ monthly_spend }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h3>Spending by Category</h3>
+        <canvas id="categoryChart"></canvas>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    fetch('/category_data')
+    .then(response => response.json())
+    .then(data => {
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(data),
+                datasets: [{
+                    data: Object.values(data),
+                    backgroundColor: ['#dc3545', '#0d6efd', '#198754', '#ffc107', '#6f42c1', '#fd7e14']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
