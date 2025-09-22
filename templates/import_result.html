@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Import Result - Budget Tracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-check-circle"></i> Import Result</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <i class="fas fa-info-circle"></i> Successfully imported <strong>{{ imported }}</strong> transactions.
+                </div>
+                {% if errors %}
+                <div class="alert alert-warning">
+                    <h6><i class="fas fa-exclamation-triangle"></i> Errors encountered:</h6>
+                    <ul class="mb-0">
+                        {% for error in errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="mt-3">
+                    <a href="{{ url_for('transactions') }}" class="btn btn-primary me-2"><i class="fas fa-list"></i> View Transactions</a>
+                    <a href="{{ url_for('import_csv') }}" class="btn btn-secondary"><i class="fas fa-upload"></i> Import Another File</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
